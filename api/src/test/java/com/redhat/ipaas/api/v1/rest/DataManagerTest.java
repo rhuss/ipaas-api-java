@@ -56,7 +56,7 @@ public class DataManagerTest {
         dataManager = new DataManager(infinispan.getCaches(), objectMapper, dataAccessObjectProvider, "com/redhat/ipaas/api/v1/deployment.json");
         dataManager.init();
     }
-    
+
     @Test
     public void getConnectors() {
         ListResult<Connector> connectors = dataManager.fetchAll(Connector.KIND);
@@ -67,7 +67,7 @@ public class DataManagerTest {
         assertTrue(connectors.getItems().size() > 1);
         assertEquals(connectors.getTotalCount(), connectors.getItems().size());
     }
-    
+
     @Test
     public void getConnections() {
         ListResult<Connection> connections = dataManager.fetchAll(Connection.KIND);
@@ -98,14 +98,14 @@ public class DataManagerTest {
         System.out.println(connector.getName());
         assertEquals("First Connector in the deployment.json is TwitterMention", "TwitterMention", connector.getName());
     }
-    
+
     @Test(expected = EntityExistsException.class)
     public void createIntegration() {
         ConfigMap configMap1 = new ConfigMapBuilder()
             .withNewMetadata()
             .withName("integration1")
-            .addToLabels(Integration.LABEL_ID, "id1")
-            .addToLabels(Integration.LABEL_NAME, "integration one")
+            .addToLabels(Integration.Label.ID.value(), "id1")
+            .addToLabels(Integration.Label.NAME.value(), "integration one")
             .endMetadata()
             .addToData(IntegrationDAO.CONFIGURATION_KEY, "someconfig")
             .build();
@@ -127,8 +127,8 @@ public class DataManagerTest {
         ConfigMap configMap2 = new ConfigMapBuilder()
             .withNewMetadata()
             .withName("integration2")
-            .addToLabels(Integration.LABEL_ID, "id2")
-            .addToLabels(Integration.LABEL_NAME, "integration two")
+            .addToLabels(Integration.Label.ID.value(), "id2")
+            .addToLabels(Integration.Label.NAME.value(), "integration two")
             .endMetadata()
             .addToData(IntegrationDAO.CONFIGURATION_KEY, "someconfig")
             .build();
